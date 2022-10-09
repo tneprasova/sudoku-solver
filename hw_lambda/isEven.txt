@@ -1,1 +1,1 @@
-(λ m . ZERO (DELTA m (*(/ m 2)2)))
+(λ m . ZERO (DELTA m (*((λ n . Y (λ c n m f x . (λ d . ZERO d (0 f x) (f (c d m f x))) (- n m)) (SUC n)) m 2)2)))
