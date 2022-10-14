@@ -1,1 +1,1 @@
-Y (λ f n . (ZERO n) T ((AND (NOT(ZERO n)) (ZERO (- n 1))) F (f (- n 2))))
+(λ x . x NOT T)
