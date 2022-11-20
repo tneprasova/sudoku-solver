@@ -27,5 +27,5 @@
 
 (define (is-palindrome? p)
   (if (null? p)
-      true
+      #t
       (equal? (removeEnds p) (myRev (removeEnds p)))))
