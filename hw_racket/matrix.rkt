@@ -32,7 +32,7 @@
 
 (define (rowsToCols matrix)
   (if (null? (cdr matrix))
-      (map lstToElems (cdr matrix))
+      matrix
       (foldl mergeLsts (lstToElems (car matrix)) (map lstToElems (cdr matrix)))))
 
 (define (rowMatrixMul row matrix)
