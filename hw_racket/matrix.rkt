@@ -30,9 +30,15 @@
       null
       (cons (lstAppend (car init) (car lst)) (mergeLsts (cdr lst) (cdr init)))))
 
+(define (oneDim lst)
+  (if (null? (cdar lst))
+      lst
+      (lstToElems (car lst))))
+      
+
 (define (rowsToCols matrix)
   (if (null? (cdr matrix))
-      matrix
+      (oneDim matrix)
       (foldl mergeLsts (lstToElems (car matrix)) (map lstToElems (cdr matrix)))))
 
 (define (rowMatrixMul row matrix)
