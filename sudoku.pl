@@ -1,18 +1,10 @@
 % Check unique values in a list
-are_unique(Row) :-
-    list_to_set(Row, Set),
-    length(Row, A),
-    length(Set, A).
+are_unique(Res) :-
+    is_set(Res).
 
-% Set values, 0 or _ is considered to be an empty field
-mapValue(_, V, V) :- V \= 0, !.
-mapValue(Max, _, Res) :-
-    between(1, Max, Res).
-
-mapValues([], _, _).
-mapValues([T|H], [R|Rs], Max) :-
-    maplist(mapValue(Max), T, R),
-    mapValues(H, Rs, Max).
+% Set values, undescore is an empty field
+mapValue(Max, Value) :-
+    between(1, Max, Value).
 
 % Transpose a matrix
 transpose([M|Ms], Res) :-
@@ -27,24 +19,58 @@ first_column_to_row([], [], []).
 first_column_to_row([[F|RestOfRow]|RestOfRows], [F|Fs], [RestOfRow|Rs]) :-
     first_column_to_row(RestOfRows, Fs, Rs).
 
+% If given element of the matrix is empty, try to replace it with a number
+matrixMapElem(Matrix, I, J) :-
+    length(Matrix, Len),
+    nth0(I, Matrix, Row),
+    nth0(J, Row, Value),
+    mapValue(Len, Value),
+    nth0(J, Row, Value).
+
+% Checks the sub squares of the sudoku
+checkSquares([], [], []).
+checkSquares([V1, V2, V3|Vs1], [V4, V5, V6|Vs2], [V7, V8, V9|Vs3]) :-
+        are_unique([V1, V2, V3, V4, V5, V6, V7, V8, V9]),
+        checkSquares(Vs1, Vs2, Vs3).
+
+genIndexes([], M, M) :- !.
+genIndexes([Min|Is], Min, Max) :-
+    plus(Min, 1, Next),
+    genIndexes(Is, Next, Max).
+
+solve(Matrix) :-
+    length(Matrix, Len),
+    genIndexes(Indexes, 0, Len),
+    outerLoop(Matrix, Indexes, Indexes).
+
+outerLoop(_, [], _).
+outerLoop(Matrix, [I|Is], J) :-
+    innerLoop(Matrix, I, J),
+    outerLoop(Matrix, Is, J).
+
+innerLoop(_, _, []).
+innerLoop(Matrix, I, [J|Js]) :-
+    % Try a number on a given position
+    matrixMapElem(Matrix, I, J),
+    
+    % Check the sudoku
+    maplist(are_unique, Matrix),
+    transpose(Matrix, Columns),
+    maplist(are_unique, Columns),
+    Matrix = [A,B,C,D,E,F,G,H,K],
+    checkSquares(A,B,C),
+    checkSquares(D,E,F),
+    checkSquares(G,H,K),
+
+    innerLoop(Matrix, I, Js).
 
 
 % The main function
-sudoku(Rows, Res):-
+sudoku(Rows):-
     % Check the dimensions (is a square)
     maplist(same_length(Rows), Rows),
     
-    % Try to map values
-    length(Rows, Len),
-    length(NewRows, Len),
-    mapValues(Rows, NewRows, Len),
+    solve(Rows),
 
-    % Check, whether the values were correctly mapped
-    maplist(are_unique, NewRows),
-    transpose(NewRows, Columns),
-    maplist(are_unique, Columns),
-    transpose(Columns, Res),
-
-    % Output
     writeln(">>"),
-    maplist(writeln, Res).
+    maplist(writeln, Rows).
