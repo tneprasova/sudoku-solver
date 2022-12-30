@@ -1,10 +1,12 @@
-# Assignment name
+# Sudoku solver
+My implementation is able to solve a random sudoku with an unlimited size of deskboard $$({n^2*n^2|n\geq 1})$$
+and finds all of the solutions.
 
-Copy the task assignment description here.
-Describe which features were implemented.
-We are not going to actively look for not mandatory features.
+## Usage
+Run the program with:
+```swipl sudoku.pl```
+Then run the solver with
+```sudoku(<your sudoku>)```
 
-## Example usage
-
-Describe the usage of your program.
-Attach some example inputs that show the functionality of your program (for every mandatory and optional feature).
+The sudoku is represented as a matrix - a list of rows, to be exact.
+For more info about using the solver, look into the examples.
