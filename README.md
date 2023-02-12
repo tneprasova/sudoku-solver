@@ -1,5 +1,3 @@
-# Homework assignments
+# Homework Assignments
 
-This is the base branch for your homeworks.
-Pushing this branch to the origin remote **does not** trigger the tester.
-See instructions page at Courses.
+This branch contains the source files for homework we received during the Programming Paradigms course at FIT CTU in Prague. We studied lambda calculus, functional programming in Racket and logical programming in Prolog.
